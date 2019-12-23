@@ -22,7 +22,7 @@ pipeline{
 }
 
 def getTerraformPath() {
-  def tfHome = tool tool name: 'Terraform', type: 'org.jenkinsci.plugins.terraform.TerraformInstallation'
+  def tfHome = tool  name: 'Terraform', type: 'org.jenkinsci.plugins.terraform.TerraformInstallation'
   return tfHome
 }
     
