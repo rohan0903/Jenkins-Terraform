@@ -1,26 +1,10 @@
-
 pipeline{
   agent any 
   environment {
   PATH = "${PATH}:${getTerraformPath()}"
 }
-  node {
-  stage("List S3 buckets") {
-    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'aws-key', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY']]) {
-        AWS("--region=eu-west-1 s3 ls")
-    }
-  }
-    
-}
   stages{
-    stage('S3 - create bucket'){
-      steps{
-        script{
-          createS3Bucket('javahome-tf-1234')
-        }
-      }
-    }
-    stage('terraform init and apply -dev'){
+   stage('terraform init and apply -dev'){
      steps{
        sh "sh  returnStatus: true, script: 'terraform workspace new dev'"
        sh "terraform init"
@@ -33,6 +17,13 @@ pipeline{
        sh "terraform init"
        sh "terraform apply -var-file=prod.tfvars -auto-approve"
      }
+    }
+     stage('S3 - create bucket'){
+      steps{
+        script{
+          createS3Bucket('javahome-tf-1234')
+        }
+      }
     }
   }
 }
