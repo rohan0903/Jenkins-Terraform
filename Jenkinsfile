@@ -1,5 +1,8 @@
 pipeline{
   agent any 
+  environment {
+  PATH = "${PATH}:${getTerraformPath()}"
+}
   stages{
     stage('terraform init'){
      steps{
@@ -7,6 +10,11 @@ pipeline{
      }
     }
   }
+}
+
+def getTerraformPath() {
+  def tfHome = tool tool name: 'Terraform', type: 'org.jenkinsci.plugins.terraform.TerraformInstallation'
+  return tfHome
 }
     
      
